@@ -39,17 +39,21 @@ module RspecProfiling
         new.uninstall
       end
 
-      def health(host, port)
-        flags = host =~ /^([0-9]{1,3}\.){3}[0-9]{1,3}$/ ? '-vuzn' : '-vuz'
+      def health(host, port, protocol)
+        flags = host =~ /^([0-9]{1,3}\.){3}[0-9]{1,3}$/ ? '-vzn' : '-vz'
+        case protocol
+          when :tcp
+            flags = flags << protocol == :tcp ? '' : 'u'
+        end
         result = `nc #{flags} #{host} #{port} 2>&1 > /dev/null`
         result =~ /open|succe(ss|eded)/
       end
 
       def health_check
-        if self.health(RspecProfiling.config.statsd_host, RspecProfiling.config.statsd_port) 
-          @logger.info("rspec_profiling connection test to statsd UDP socket at [#{RspecProfiling.config.statsd_host}:#{RspecProfiling.config.statsd_port}] is successful.")
+        if self.health(RspecProfiling.config.statsd_host, RspecProfiling.config.statsd_port, RspecProfiling.config.statsd_protocol) 
+          @logger.info("rspec_profiling connection test to statsd socket at [#{RspecProfiling.config.statsd_host}:#{RspecProfiling.config.statsd_port}] is successful.")
         else
-          @logger.warn("rspec_profiling cannot connect to statsd UDP socket at [#{RspecProfiling.config.statsd_host}:#{RspecProfiling.config.statsd_port}]. You will not see profiling results.")
+          @logger.warn("rspec_profiling cannot connect to statsd socket at [#{RspecProfiling.config.statsd_host}:#{RspecProfiling.config.statsd_port}]. You will not see profiling results.")
         end
       end
 
