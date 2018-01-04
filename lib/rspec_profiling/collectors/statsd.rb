@@ -130,9 +130,8 @@ module RspecProfiling
       end
 
       def build_stamp(desc, line_number)
-        hash_desc = format_desc(desc)
         readable_short = format_readable_short(desc)
-        "#{line_number}_#{hash_desc}_#{readable_short}"
+        "#{line_number}_#{readable_short}"
       end
 
       def format_readable_short(description) 
