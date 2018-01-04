@@ -42,7 +42,7 @@ module RspecProfiling
       def health(host, port, protocol)
         flags = host =~ /^([0-9]{1,3}\.){3}[0-9]{1,3}$/ ? '-vzn' : '-vz'
         case protocol
-          when :tcp
+          when :udp
             flags << 'u'
         end
         result = `nc #{flags} #{host} #{port} 2>&1 > /dev/null`
