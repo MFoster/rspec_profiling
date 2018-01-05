@@ -129,11 +129,6 @@ module RspecProfiling
         arr[-max..-1] 
       end
 
-      def build_stamp(desc, line_number)
-        readable_short = format_readable_short(desc)
-        "#{line_number}_#{readable_short}"
-      end
-
       def format_readable_short(description) 
         result = description.split(' ')
         if result.length > 3
