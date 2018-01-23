@@ -98,10 +98,6 @@ module RspecProfiling
         return str
       end
 
-      def format_date(date)
-        date.strftime(DATE_FORMAT_OUTPUT)
-      end
-
       def build_stamp(desc, line_number)
         readable_short = format_readable_short(desc)
         "#{line_number}_#{readable_short}"
@@ -135,7 +131,6 @@ module RspecProfiling
         stamp = build_stamp(attributes.fetch(:description), attributes.fetch(:line_number))
         path = format_file(attributes.fetch(:file), RspecProfiling.config.statsd_max_depth)
         branch = attributes.fetch(:branch)
-        commit_date = format_date(attributes.fetch(:date))
         key = "#{branch}.#{path}.#{stamp}".gsub("\n", '')
 
         self.statsd.batch do |b|
